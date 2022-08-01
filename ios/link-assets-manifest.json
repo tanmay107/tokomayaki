@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Bulgatti.ttf",
+      "sha1": "014ad792d68dd039a8e07b04deb9de0d41156184"
+    },
+    {
+      "path": "assets/fonts/ReemKufi-Regular.ttf",
+      "sha1": "0151ae9062f13306a0109d184d96b185be4fbd68"
+    }
+  ]
+}
