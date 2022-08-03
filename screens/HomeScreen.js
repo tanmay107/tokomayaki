@@ -1,24 +1,29 @@
 import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import colors from '../assets/colors/colors';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { AuthContext } from '../context/context';
 
 const HomeScreen = () => {
-    const route = useRoute();
+    const { signOut } = useContext(AuthContext);
+    const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.header}>
             <Image source={require('../assets/images/Group1.png')} style={styles.image}/>
             <Text style={styles.title}>Tokomayaki</Text>
+            <Pressable style={styles.buttonSignOut} onPress={signOut}>
+                <Text style={{ color: '#656565', fontSize: 14, lineHeight: 21, fontFamily: 'ReemKufi-Regular', }}>Sign out</Text>
+            </Pressable>
         </View>
         <View style={styles.main}>
             <Text style={styles.welcome}>Welcome, </Text>
-            <Text style={styles.name}>{route.params.user}</Text>
+            <Text style={styles.name}>Tanmay</Text>
             <Text style={styles.content}>to the Toko family,  we deliver the best in class ice-creams across Japan and Taiwan. Starting soon in USA, Canada and UK... </Text>
         </View>
         <View style={styles.imageContainer}>
             <Image source={require('../assets/images/Landing1.png')} style={styles.imageTruck} />
-            <Pressable style={styles.button}>
+            <Pressable style={styles.button} onPress={() => navigation.navigate("GetStart")}>
                 <Text style={{ color: '#656565', fontSize: 14, lineHeight: 21, fontFamily: 'ReemKufi-Regular', }}>Get Started</Text>
             </Pressable>
         </View>
@@ -97,6 +102,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10,
         marginTop: 21,
+        marginHorizontal: 100,
+    },
+    buttonSignOut: {
+        height: 30,
+        width: 70,
+        backgroundColor: '#F1F2C4',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        marginTop: 10,
         marginHorizontal: 100,
     },
 })

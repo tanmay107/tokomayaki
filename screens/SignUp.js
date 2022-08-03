@@ -1,8 +1,9 @@
 import { Alert, Button, Image, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import colors from '../assets/colors/colors';
 import { useNavigation } from '@react-navigation/native';
 import { users } from '../assets/userCreds';
+import { AuthContext } from '../context/context';
 
 const SignUp = () => {
 
@@ -10,6 +11,7 @@ const SignUp = () => {
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
     const navigation = useNavigation();
+    const { signUp } = useContext(AuthContext);
 
     const validateEmail = (email_id) => {
         const regex_pattern =      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -22,12 +24,21 @@ const SignUp = () => {
         }
     }
 
+    const storeData = async (value) => {
+        try {
+          const jsonValue = JSON.stringify(value)
+          await AsyncStorage.setItem('@storage_Key', jsonValue)
+        } catch (e) {
+          console.log(e)
+        }
+    }
+
     const handlePress = () => {
         if(validateEmail(email)){
             const found = users.some(user => user.email === email);
             if(!found) {
                 users.push({ id: users.length+1, name: name, email: email, password: password });
-                navigation.navigate("Home", { user: name })
+                signUp(email)
             } else {
                 Alert.alert("Caution", "User already registered with this email")
             }

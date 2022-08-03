@@ -1,15 +1,18 @@
 import { Alert, Button, Image, KeyboardAvoidingView, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import colors from '../assets/colors/colors'
 import { useNavigation } from '@react-navigation/native';
 import { users } from '../assets/userCreds';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../context/context';
 
 const SignIn = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
+
+    const { signIn } = useContext(AuthContext);
 
     const validateEmail = (email_id) => {
         const regex_pattern =      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -36,8 +39,8 @@ const SignIn = () => {
             const found = users.some(user => user.email === email && user.password === password);
             if (found) {
                 let result = users.find(user => user.email === email);
-                storeData(result);
-                navigation.navigate("Home", { user: result.name })
+                signIn(result.email, result.password);
+                // navigation.navigate("Home", { user: result.name })
             } else {
                 Alert.alert("Warning", "Wrong Credentials !")
             }
